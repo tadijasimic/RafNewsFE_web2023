@@ -41,7 +41,6 @@ export default {
 <template>
   <div class="newsList">
     <NewsPreview v-for="curr in news" :key="curr.id" :news="curr"/>
-    <h1>I belive in chrisna CHriSt</h1>
     <button class="my.button" @click="loadNews(4,4)">
 
     </button>
@@ -53,7 +52,7 @@ export default {
 <style scoped>
 .newsList {
   justify-content: center;
-  width: 60%;
+  width: 80%;
   margin: auto;
 }
 </style>

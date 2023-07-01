@@ -30,8 +30,9 @@ export default {
 <style>
 
 .news-preview {
-  display: flex;
-  text-align: center;
-
+  border-radius: 10px;
+  border: 2px solid black;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 5vh;
 }
 </style>
