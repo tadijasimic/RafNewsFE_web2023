@@ -13,13 +13,13 @@ export default {
 
 <template>
   <div :style="{ width: sidebarWidth }" class="sidebar">
-    <h1>
+    <h2>
       <span v-if="!collapsed">Raf_News</span>
       <span v-else>RN </span>
-    </h1>
+    </h2>
 
     <SidebarLink icon="fas fa-home" to="/home">Home</SidebarLink>
-    <SidebarLink icon="fas fa-columns" to="/">Dashboard</SidebarLink>
+    <SidebarLink icon="fas fa-columns" to="/login">Dashboard</SidebarLink>
     <SidebarLink icon="fas fa-chart-bar" to="/">Analytics</SidebarLink>
     <SidebarLink icon="fas fa-users" to="/">Friends</SidebarLink>
     <SidebarLink icon="fas fa-image" to="/">Images</SidebarLink>
@@ -27,8 +27,8 @@ export default {
     <span
         :class="{ 'rotate-180': collapsed }"
         class="collapse-icon"
-        @click="toggleSidebar"
-    >
+        @click="toggleSidebar">
+
       <i class="fas fa-angle-double-left"/>
     </span>
   </div>
@@ -56,15 +56,18 @@ export default {
   left: 0;
   bottom: 0;
   padding: 0.5em;
-
   transition: 0.3s ease;
-
   display: flex;
   flex-direction: column;
 }
 
-.sidebar h1 {
-  height: 2.5em;
+.sidebar h2 {
+  border-radius: 5px;
+  padding-top: 4px; /* Adds 10 pixels of padding to the top */
+  padding-bottom: 4px;
+  padding-left: 2px;
+
+  box-shadow: 4px 4px 10px black;
 }
 
 .collapse-icon {
