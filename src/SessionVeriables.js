@@ -1,4 +1,4 @@
-export let jwt
+export let jwt;
 
 export let roles = [
     "ADMIN", "CONTENT_CREATOR", "CONTENT_VIEWER"
@@ -7,4 +7,6 @@ export let roles = [
 export let status = [
     "ACTIVE", "DEACTIVATED"
 ]
+
+
 

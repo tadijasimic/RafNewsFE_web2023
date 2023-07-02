@@ -4,6 +4,7 @@ import {useRoute} from 'vue-router'
 import {collapsed} from './sidebar_state.js'
 
 export default {
+  name: 'SidebarLink',
   props: {
     to: {type: String, required: true},
     icon: {type: String, required: true}

@@ -13,16 +13,19 @@ export default {
 
 <template>
   <div :style="{ width: sidebarWidth }" class="sidebar">
-    <h2>
+    <h3>
       <span v-if="!collapsed">Raf_News</span>
-      <span v-else>RN </span>
-    </h2>
+      <span v-else>RN</span>
+    </h3>
 
     <SidebarLink icon="fas fa-home" to="/home">Home</SidebarLink>
-    <SidebarLink icon="fas fa-columns" to="/login">Dashboard</SidebarLink>
-    <SidebarLink icon="fas fa-chart-bar" to="/">Analytics</SidebarLink>
+    <SidebarLink icon="fas fa-columns" to="/users">Users</SidebarLink>
+    <SidebarLink icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
     <SidebarLink icon="fas fa-users" to="/">Friends</SidebarLink>
     <SidebarLink icon="fas fa-image" to="/">Images</SidebarLink>
+
+    <!-- Split dropend button -->
+
 
     <span
         :class="{ 'rotate-180': collapsed }"
@@ -56,12 +59,44 @@ export default {
   left: 0;
   bottom: 0;
   padding: 0.5em;
-  transition: 0.3s ease;
+  transition: 0.5s ease;
   display: flex;
   flex-direction: column;
 }
 
-.sidebar h2 {
+.btn-group {
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+  position: relative;
+  font-weight: 400;
+  user-select: none;
+
+  margin: 0.1em 0;
+  padding: 0.4em;
+  border-radius: 0.25em;
+  height: 1.5em;
+
+  color: white;
+  text-decoration: none;
+}
+
+.btn-group:hover {
+  background-color: var(--sidebar-item-hover);
+}
+
+.btn-group {
+  background-color: var(--sidebar-item-active);
+}
+
+.btn-group .icon {
+  flex-shrink: 0;
+  width: 25px;
+  margin-right: 10px;
+}
+
+.sidebar h3 {
   border-radius: 5px;
   padding-top: 4px; /* Adds 10 pixels of padding to the top */
   padding-bottom: 4px;
@@ -74,14 +109,15 @@ export default {
   position: absolute;
   bottom: 0;
   padding: 0.75em;
+  cursor: pointer;
 
   color: rgba(255, 255, 255, 0.7);
 
-  transition: 0.2s linear;
+  transition: 0.5s linear;
 }
 
 .rotate-180 {
   transform: rotate(180deg);
-  transition: 0.2s linear;
+  transition: 0.5s linear;
 }
 </style>
