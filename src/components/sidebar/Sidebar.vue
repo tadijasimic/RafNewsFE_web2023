@@ -13,16 +13,18 @@ export default {
 
 <template>
   <div :style="{ width: sidebarWidth }" class="sidebar">
-    <h3>
-      <span v-if="!collapsed">Raf_News</span>
-      <span v-else>RN</span>
-    </h3>
-
-    <SidebarLink icon="fas fa-home" to="/home">Home</SidebarLink>
-    <SidebarLink icon="fas fa-columns" to="/users">Users</SidebarLink>
-    <SidebarLink icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
-    <SidebarLink icon="fas fa-users" to="/">Friends</SidebarLink>
-    <SidebarLink icon="fas fa-image" to="/">Images</SidebarLink>
+    <div>
+      <h4>
+        <span v-if="!collapsed">Raf_News</span>
+        <span v-else>RN</span>
+      </h4>
+      <SidebarLink icon="fa fa-home" to="/home">Home</SidebarLink>
+      <SidebarLink icon="fas fa-users" to="/users">Users</SidebarLink>
+      <SidebarLink icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
+      <SidebarLink icon=" fas fa-right-from-bracket" to="/login">Login</SidebarLink>
+      <SidebarLink icon="fas fa-users" to="/">Friends</SidebarLink>
+      <SidebarLink icon="fas fa-image" to="/">Images</SidebarLink>
+    </div>
 
     <!-- Split dropend button -->
 
@@ -51,7 +53,7 @@ export default {
 .sidebar {
   color: white;
   background-color: var(--sidebar-bg-color);
-
+  height: 100vh;
   float: left;
   position: fixed;
   z-index: 1;
@@ -96,13 +98,11 @@ export default {
   margin-right: 10px;
 }
 
-.sidebar h3 {
-  border-radius: 5px;
-  padding-top: 4px; /* Adds 10 pixels of padding to the top */
-  padding-bottom: 4px;
-  padding-left: 2px;
-
-  box-shadow: 4px 4px 10px black;
+.sidebar h4 {
+  font-weight: 1000;
+  border-radius: 0.5rem;
+  padding: 0.2rem;
+  box-shadow: 4px 4px 20px black;
 }
 
 .collapse-icon {
@@ -110,9 +110,7 @@ export default {
   bottom: 0;
   padding: 0.75em;
   cursor: pointer;
-
   color: rgba(255, 255, 255, 0.7);
-
   transition: 0.5s linear;
 }
 

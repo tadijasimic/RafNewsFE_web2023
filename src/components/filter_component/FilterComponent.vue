@@ -1,35 +1,91 @@
 <template>
   <div>
-    <b-button v-b-toggle.collapse1>Toggle</b-button>
+    <button @click="toggleCollapse">Toggle</button>
 
-    <b-collapse id="collapse1">
+    <div v-if="isCollapsed">
       <!-- Content to toggle -->
       <p>This content will be toggled</p>
-    </b-collapse>
+    </div>
 
-    <b-dropdown id="dropdown1" text="Select Category" variant="primary">
-      <b-dropdown-item>Category 1</b-dropdown-item>
-      <b-dropdown-item>Category 2</b-dropdown-item>
-      <b-dropdown-item>Category 3</b-dropdown-item>
-    </b-dropdown>
+    <div class="dropdown">
+      <button class="dropdown-toggle" type="button" @click="toggleDropdown">
+        {{ selectedCategory || 'Select Category' }}
+      </button>
+      <ul v-if="isDropdownOpen" class="dropdown-menu">
+        <li v-for="category in categories" :key="category" @click="selectCategory(category)">
+          {{ category }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-
-import {BButton, BCollapse, BDropdown, BDropdownItem} from "bootstrap-vue";
-
 export default {
   name: 'FilterComponent',
-  components: {
-    BButton,
-    BCollapse,
-    BDropdown,
-    BDropdownItem,
+  data() {
+    return {
+      isCollapsed: false,
+      isDropdownOpen: false,
+      selectedCategory: null,
+      categories: ['Category 1', 'Category 2', 'Category 3'],
+    };
+  },
+  methods: {
+    toggleCollapse() {
+      this.isCollapsed = !this.isCollapsed;
+    },
+    toggleDropdown() {
+      this.isDropdownOpen = !this.isDropdownOpen;
+    },
+    selectCategory(category) {
+      this.selectedCategory = category;
+      this.isDropdownOpen = false;
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 /* Add any custom styling here */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 100;
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.dropdown-menu li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
 </style>

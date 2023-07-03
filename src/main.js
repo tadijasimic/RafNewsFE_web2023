@@ -1,14 +1,14 @@
 // main.js
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 
 import {createApp} from 'vue'
 import {createRouter, createWebHistory} from 'vue-router';
+
 // Import your components
 import App from './App.vue';
 import HomePage from '@/views/HomePage.vue';
 import LoginPage from "@/views/LoginPage.vue";
-
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import UsersPage from "@/views/UsersPage.vue";
 
 

@@ -59,7 +59,7 @@ export default {
 
     <p id="content">
       {{ contentExpanded ? news.content : news.content.slice(0, 200) + '...' }}
-      <a v-if="news.content.length >= 200" class="a"
+      <a v-if="news.content.length >= 200" class="blue-underline"
          @click.stop="()=>{contentExpanded= !contentExpanded}">
         {{ contentExpanded ? 'read less' : 'read more' }}</a>
     </p>
@@ -160,13 +160,6 @@ div {
   margin-bottom: 2vh;
 }
 
-.divider {
-  margin: 1rem 0;
-  border: none;
-  border-top: 1px solid #ccc;
-  width: 100%;
-  border-top: 2px solid #333; /* Update the border color and thickness */
-}
 
 .right-alignment {
   text-align: right;
@@ -182,11 +175,6 @@ div {
   padding: 3px;
 }
 
-a {
-  font-size: 0.75rem;
-  color: blue;
-  text-decoration: underline;
-}
 
 #creationTime {
   font-size: 0.8rem;
@@ -196,6 +184,7 @@ a {
 #author {
   font-size: 0.9rem;
   font-weight: bolder;
-
 }
+
+
 </style>

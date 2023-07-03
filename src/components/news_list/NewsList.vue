@@ -1,6 +1,6 @@
 <script>
 
-import NewsPreview from "@/components/news_preview/NewsPreview.vue";
+import NewsPreview from "@/components/news_list/news_preview/NewsPreview.vue";
 import axios from "axios";
 
 export default {
@@ -48,7 +48,7 @@ export default {
   <div class="newsList">
     <NewsPreview v-for="curr in news" :key="curr.id" :news="curr"/>
     <span>
-
+      <i/>
     </span>
   </div>
 </template>
@@ -58,21 +58,8 @@ export default {
 
 .newsList {
   justify-content: center;
-  width: 50vw;
+  width: 35rem;
   margin: auto;
-}
-
-.newsList span:hover {
-  border-radius: 10px;
-  box-shadow: 4px 4px 15px #276749;
-  margin-bottom: 2.5vh;
-  text-align: center;
-  cursor: pointer;
-}
-
-.newsList span:hover {
-  background-color: #cde9d8;
-  transform: scale(1.03);
 }
 
 

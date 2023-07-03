@@ -146,7 +146,7 @@ export default {
         <div v-if="formError" class="error-message form-error">{{ formError }}</div>
       </div>
     </form>
-    <a class="toggle-state" @click="toggleState">
+    <a class="toggle-state blue-underline" @click="toggleState">
       {{ currentState === 'login' ? "You don't have an account? Sign up!" : 'You already have an account? Login here!' }}
     </a>
   </div>
@@ -161,11 +161,11 @@ export default {
   align-items: center;
   padding: 2rem;
   background-color: #f5f5f5;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  margin: 0 auto;
-  margin-top: 10vh;
+  max-width: 40vw;
+  margin: 10vh auto;
+
 }
 
 h2 {
@@ -197,22 +197,15 @@ select {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 
-.divider {
-  margin: 1rem 0;
-  border: none;
-  border-top: 1px solid #ccc;
-  width: 100%;
-  border-top: 2px solid #333; /* Update the border color and thickness */
-}
 
 .submit-btn {
   background-color: #1976d2;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   font-size: 1rem;
   padding: 0.75rem 1rem;
   cursor: pointer;
@@ -226,14 +219,13 @@ select {
   background-color: #1565c0;
 }
 
-.toggle-state {
 
-  cursor: pointer;
+.toggle-state {
   margin-top: 1em;
   text-align: center;
 //margin-top: 1.5rem; /* Reduce the top margin */
-
 }
+
 
 input:invalid {
   border-color: red;

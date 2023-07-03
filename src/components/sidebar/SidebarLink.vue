@@ -8,7 +8,7 @@ export default {
   props: {
     to: {type: String, required: true},
     icon: {type: String, required: true}
-  },
+  },//???????????????????????????????????????????????Todo:pitaj...
   setup(props) {
     const route = useRoute()
     const isActive = computed(() => route.path === props.to)
@@ -22,7 +22,7 @@ export default {
   <router-link :class="{ active: isActive }" :to="to" class="link">
     <i :class="icon" class="icon"/>
     <transition name="fade">
-      <span v-if="!collapsed">
+      <span v-if="!collapsed" class="item">
         <slot/>
       </span>
     </transition>
@@ -32,15 +32,59 @@ export default {
 <style scoped>
 @import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.1s;
+.fade-enter-active {
+  animation: fadeIn 1s forwards;
 }
 
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+.fade-leave-active {
+
+  animation: fadeOut 0.5s backwards;
+
 }
+
+.fade-enter {
+  animation: fadeIn 1s forwards;
+}
+
+.fade-leave-to {
+  animation: fadeOut 0.5s backwards;
+
+}
+
+.item {
+  flex: 1;
+  padding-left: 2vw;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    display: none;
+  }
+}
+
 
 .link {
   display: flex;
@@ -48,13 +92,11 @@ export default {
 
   cursor: pointer;
   position: relative;
-  font-weight: 400;
+  font-weight: 1000;
   user-select: none;
 
-  margin: 0.1em 0;
   padding: 0.4em;
   border-radius: 0.25em;
-  height: 1.5em;
 
   color: white;
   text-decoration: none;
@@ -69,8 +111,8 @@ export default {
 }
 
 .link .icon {
-  flex-shrink: 0;
-  width: 25px;
-  margin-right: 10px;
+  font-size: 1.3rem;
+  align-items: center;
+  margin-left: 0;
 }
 </style>
