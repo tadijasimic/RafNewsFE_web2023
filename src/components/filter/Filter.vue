@@ -1,19 +1,17 @@
 <script>
 import {myAxios} from "@/config/api";
-import {expanded, selectedCategory, dateOrder, trending, pageSize, tagSearch} from "@/components/filter/filter";
+import {filterExpanded, selectedCategory, dateOrder, trending, pageSize, tagSearch} from "@/components/filter/filter";
 
 export default {
   name: 'Filter',
   computed: {
+    filterExpanded() {
+      return filterExpanded
+    },
     selectedCategory() {
       return selectedCategory
     },
-    expanded() {
-      return expanded
-    },
-    category() {
-      return category
-    },
+
     dateOrder() {
       return dateOrder
     },
@@ -34,14 +32,12 @@ export default {
   },
   methods: {
     toggleExpanded() {
-      if (expanded.value === null)
-        expanded.value = true
-      else expanded.value = !expanded.value
-      console.log(expanded.value)
+      if (filterExpanded.value === null)
+        filterExpanded.value = true
+      else filterExpanded.value = !filterExpanded.value
+      console.log(filterExpanded.value)
     },
-    toggleDropdown() {
-      this.dropdownOpen = true
-    },
+
 
     selectCategory(category) {
       selectedCategory.value = category
@@ -60,9 +56,12 @@ export default {
       dateOrder.value = dateOrder.value === 'asc' ? 'desc' : 'asc';
       console.log(dateOrder)
     },
+    togleTrending() {
+      trending.value = !trending.value
+    },
     async loadCategories() {
       try {
-        this.categories = (await myAxios.get('http://localhost:8080/micaga/api/categories/all')).data
+        this.categories = (await myAxios.get('/categories/all')).data
         console.log(this.categories)
 
       } catch (error) {
@@ -80,24 +79,25 @@ export default {
 
 
 <template>
-  <div :class="{'filterOff' : expanded.value === false}" class="filter">
+  <div :class="{'filterOff' : filterExpanded.value === false}" class="filter">
 
     <!-- FILTER BUTTON -->
-    <button :class="{ 'move-up': expanded.value === false, 'move-down': expanded.value === true }" class="filter-button" @click="toggleExpanded">
+    <button :class="{ 'move-up': filterExpanded.value === false, 'move-down': filterExpanded.value === true }" class="filter-button"
+            @click="toggleExpanded">
       <i class="fas fa-filter"></i>
     </button>
 
     <!-- Expanded content -->
     <transition name="filter-transition">
 
-      <div v-if="expanded.value">
+      <div v-if="filterExpanded.value">
 
         <!-- Search input -->
         <input v-model="tagSearch.value" placeholder="Search for Tags" type="text"/>
 
 
         <!-- Trending button -->
-        <button class="trending-button">
+        <button class="trending-button" @click="togleTrending">
           <i class="fas fa-fire"></i>
           Trending
         </button>

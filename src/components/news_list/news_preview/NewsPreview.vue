@@ -1,6 +1,5 @@
 <script>
 
-import axios from "axios";
 import {myAxios} from "@/config/api";
 
 export default {
@@ -24,7 +23,7 @@ export default {
       if (this.commentsExpanded) {
         this.commentsExpanded = false
       } else {
-        this.comments = (await myAxios.get('http://localhost:8080/micaga/api/comments/onNews/' + this.news.id)).data
+        this.comments = (await myAxios.get('/comments/onNews/' + this.news.id)).data
         this.commentsExpanded = true
       }
     }

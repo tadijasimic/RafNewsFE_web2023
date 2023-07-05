@@ -20,6 +20,7 @@ const endSession = () => {
 /** Deconstructs JWT and extract session payload information */
 const unwrapJwtPayload = (jwt) => {
     if (!jwt) return null
+
     try {
         let token = jwt.split('.')[1];
         return JSON.parse(atob(token));

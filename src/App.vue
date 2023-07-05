@@ -1,25 +1,29 @@
 <script>
 import Sidebar from "@/components/sidebar/Sidebar.vue";
 import {sidebarWidth} from "@/components/sidebar/sidebar_state";
-import {currSession, roles} from "@/config/session";
+import {endSession, beginSession, currSession, roles} from "@/config/session";
+import {watch} from "vue";
 
 
 export default {
   name: 'App',
+  methods: {currSession, watch},
   computed: {
     roles() {
       return roles
+    },
+    endSession() {
+      return endSession;
+    },
+    beginSession() {
+      return beginSession()
     }
   },
-  methods: {currSession},
-
   components: {Sidebar},
   setup() {
-    return {sidebarWidth}
+    return {sidebarWidth, beginSession, endSession};
   }
-
-}
-
+};
 </script>
 <!-- app view port -->
 <template>

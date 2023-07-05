@@ -17,7 +17,7 @@ export default {
 <template>
   <div class="flex-container">
     <div class="news-list">
-      <NewsList api="http://localhost:8080/micaga/api/news/all"/>
+      <NewsList/>
     </div>
     <Filter/>
 

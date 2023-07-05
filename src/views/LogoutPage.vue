@@ -1,8 +1,14 @@
 <script>
 
+import {endSession} from "@/config/session";
+
 export default {
   name: 'LogoutPage',
+  mounted() {
+    endSession()
+  }
 }
+
 </script>
 
 <template>

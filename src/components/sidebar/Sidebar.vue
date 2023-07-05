@@ -21,13 +21,12 @@ export default {
         <span v-if="!collapsed">Raf_News</span>
         <span v-else>RN</span>
       </h4>
-      <SidebarLink icon="fas fa-home" to="/home">Home</SidebarLink>
+      <SidebarLink icon="fas fa-home" to="/">Home</SidebarLink>
       <SidebarLink icon="fas fa-users" to="/users">Users</SidebarLink>
+      <SidebarLink icon="fas fa-newspaper" to="/createNews">Publish</SidebarLink>
+      <SidebarLink icon="fas fa-rectangle-list" to="/categories">Categories</SidebarLink>
       <SidebarLink v-if="!currSession()" icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
-      <SidebarLink v-if="!currSession()" icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
-
-      <SidebarLink v-if="!currSession()" icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
-      <SidebarLink icon=" fas fa-right-from-bracket" to="/logout">Log out</SidebarLink>
+      <SidebarLink v-if="currSession()" icon=" fas fa-right-from-bracket" to="/logout">Log out</SidebarLink>
     </div>
 
     <!-- Split dropend button -->

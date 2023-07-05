@@ -1,28 +1,52 @@
 <script>
 
-import NewsPreview from "@/components/news_list/news_preview/NewsPreview.vue";
-import {expanded} from "@/components/filter/filter";
-import {myAxios} from "@/config/api";
+import NewsPreview from "@/components/news_list/news_preview/NewsPreview.vue"
+import {dateOrder, filterExpanded, pageSize, selectedCategory, trending} from "@/components/filter/filter"
+import {myAxios} from "@/config/api"
+import {watch} from "vue";
 
 export default {
   name: "NewsList",
-  computed: {
-    expanded() {
-      return expanded
-    }
-  },
-  props: {
-    api: {
-      type: String, required: true
-    }
-  },
   components: {NewsPreview},
+  data() {
+    return {
+      news: [],
+      pageIndex: 1,
+      pageSize: 10,
+
+    }
+  },
+  computed: {
+    filterExpanded() {
+      return filterExpanded.value;
+    },
+    selectedCategory() {
+      return selectedCategory.value;
+    },
+    dateOrder() {
+      return dateOrder.value;
+    },
+    trending() {
+      return trending.value;
+    },
+    pageSize() {
+      return pageSize.value;
+    }
+  },
 
   methods: {
-    async loadNews(pageIndex, pageSize) {
+    buildFilterQuery() {
+      let query = 'category=' + selectedCategory.value.id + '&date=' + dateOrder.value + '&trending'
+    },
+    async loadNews() {
       try {
         // Perform asynchronous operations
-        this.news = (await myAxios.get(this.api)).data
+        if (filterExpanded.value === false) {
+          this.news = (await myAxios.get('/news/all')).data
+        } else {
+          this.news = []
+          console.log('MAJMUNCINAAAAAAAAAAAAAAa')
+        }
         console.log(this.news)
       } catch (error) {
         // Handle any errors that occur
@@ -32,28 +56,24 @@ export default {
     setPageSize(pageSize) {
       this.pageIndex = pageSize;
     }
-  }
-  ,
-  data() {
-    return {
-      news: [],
-      pageIndex: 1,
-      pageSize: 10,
-
-    }
   },
-  /*setup() {
-    return (filter)
-  },*/
   mounted() {
-    this.loadNews(1, 2)
+    this.loadNews()
     console.log(this.news)
-  }
+  },
+  setup() {
+    watch([filterExpanded, selectedCategory, dateOrder, trending, pageSize], () => {
+      if (filterExpanded.value) {
+      }
+
+    })
+  },
+
 }
 </script>
 
 <template>
-  <div :class="{'filterExpansion': expanded.value === true}" class="newsList">
+  <div :class="{'filterExpansion': filterExpanded.value === true}" class="newsList">
 
     <NewsPreview v-for="curr in news" :key="curr.id" :news="curr"/>
     <span>

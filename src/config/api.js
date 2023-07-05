@@ -3,7 +3,9 @@
 import axios from 'axios';
 
 // Create a new Axios instance
-const myAxios = axios.create();
+const myAxios = axios.create(
+    {baseURL: 'http://localhost:8080/api'}
+);
 
 // Function to remove the Authorization header
 const removeAuthorizationHeader = () => {

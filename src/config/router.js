@@ -7,11 +7,12 @@ import HomePage from "@/views/HomePage.vue";
 import CreateNewsPage from "@/views/CreateNewsPage.vue";
 import LogoutPage from "@/views/LogoutPage.vue";
 import {currSession, roles, status} from "@/config/session";
+import CategoriesPage from "@/views/CategoriesPage.vue";
 
 // App routes
 const routes = [
     {
-        path: '/home',
+        path: '/',
         component: HomePage,
         meta: {
             authenticationRequired: false,
@@ -24,6 +25,15 @@ const routes = [
         meta: {
             authenticationRequired: true,
             authorizationRequired: roles.contentCreator,
+
+        }
+    },
+    {
+        path: '/categories',
+        component: CategoriesPage,
+        meta: {
+            authenticationRequired: false,
+            authorizationRequired: roles.contentViewer,
 
         }
     },
@@ -59,38 +69,40 @@ export const myRouter = createRouter({
     routes,
 });
 
-function redirect(redirectRoute, redirectMessage, next) {
-    console.log("RUTER SE JAVLJA")
-    next(redirectRoute)
-    alert(redirectMessage);
-}
 
 myRouter.beforeEach((to, from, next) => {
     const authenticationReq = to.meta.authenticationRequired;
     const authorizationReq = to.meta.authorizationRequired;
 
     if (authenticationReq) {
-        let redirectMessage
+        let redirectMessage;
 
-        if (currSession() === null)
-            redirectMessage = 'Authentication is required for route: ' + to.path + '.Please log in.'
+        if (currSession() === null) {
+            redirectMessage = 'Authentication is required for route: ' + to.path + '. Please log in.';
+        } else if (currSession().status !== status.active) {
+            redirectMessage = 'Can\'t access route ' + to.path + '. Your account is deactivated.';
+        } else if (authorizationReq === roles.admin && currSession().role !== roles.admin) {
+            redirectMessage = 'Not authorized to access this route. If you want to access this route please log in as administrator.';
+        } else if (authorizationReq === roles.contentCreator && currSession().role === roles.contentViewer) {
+            redirectMessage = 'Content creators can access this route. If you want to create News, change your account\'s role in settings.';
+        }
 
-        else if (currSession().status !== status.active)
-            redirectMessage = 'Can\'t access route ' + to.path + '. Your account is deactivated.'
-
-        else if (authorizationReq === roles.admin && currSession().role !== roles.admin)
-            redirectMessage = 'Not authorized to access this route. If you want to access this route please log in as administrator'
-
-        else if (authorizationReq === roles.contentCreator && currSession().role === roles.contentViewer)
-            redirectMessage = 'Content creators can access this route. If you want to create News change your accounts role in settings'
-
-
-        if (!!redirectMessage) {
-            if (from === undefined)
-                redirect('/home', redirectMessage)
-            else
-                redirect(from.path, redirectMessage)
-        } else next()
+        if (redirectMessage) {
+            if (from === undefined) {
+                redirect('/', redirectMessage, next);
+            } else {
+                redirect(from.path, redirectMessage, next);
+            }
+            return; // Exit the function early after redirection
+        }
     }
-    next()
+
+    next();
 });
+
+function redirect(redirectRoute, redirectMessage, next) {
+    console.log("ROUTER SE JAVLJA");
+    next(redirectRoute);
+    alert(redirectMessage);
+}
+

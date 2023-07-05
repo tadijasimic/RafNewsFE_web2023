@@ -1,5 +1,7 @@
 <script>
 import {myAxios} from "@/config/api";
+import {beginSession} from "@/config/session";
+import {myRouter} from "@/config/router";
 
 export default {
   name: 'LoginPage',
@@ -29,20 +31,19 @@ export default {
       this.clearErrors();
 
       // Perform form validation
-      if (this.currentState === 'login') {
-        if (!this.email) {
-          this.emailError = 'Email is required';
-        }
-        if (!this.password) {
-          this.passwordError = 'Password is required';
-        }
-      } else {
-        if (!this.email) {
-          this.emailError = 'Email is required';
-        }
-        if (!this.password) {
-          this.passwordError = 'Password is required';
-        }
+
+      if (!this.email) {
+        this.emailError = 'Email is required';
+      }
+      if (!this.emailPattern.test(this.email)) {
+        this.emailError = 'Invalid email format';
+      }
+
+      if (!this.password) {
+        this.passwordError = 'Password is required';
+      }
+
+      if (this.currentState === 'signup') {
         if (!this.firstName) {
           this.firstNameError = 'First name is required';
         }
@@ -53,6 +54,7 @@ export default {
           this.roleError = 'Role is required';
         }
       }
+
       // Validate email format using regex pattern
       if (this.email && !this.emailPattern.test(this.email)) {
         this.emailError = 'Invalid email format';
@@ -62,15 +64,12 @@ export default {
       if (this.hasErrors()) {
         this.formError = 'Please fill in all required fields.';
       } else {
-        // Form is valid, submit logic here
+
         this.formError = '';
-
         if (this.currentState === 'login') {
-          // Login logic
-
+          this.login()
         } else if (this.currentState === 'signup') {
-          // Sign up logic
-          console.log('Signing up...');
+          this.signup()
         }
       }
     },
@@ -95,14 +94,36 @@ export default {
           this.roleError)
 
     },
-    login:
-        () => {
-          myAxios.post('')
-        }
-    ,
+    async login() {
+      let response = (await myAxios.post('/users/login', {email: this.email, password: this.password})).data;
+      if (response.status !== 200) {
+        this.formError = response.message;
+        return
+      }
+      beginSession(response.jwt)
+      myRouter.push('/')
 
+    },
+    async signup() {
+      let response = (await myAxios.post('/users/signup', {
+        id: 1,
+        email: this.email,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        password: this.password,
+        role: this.role,
+        status: 'ACTIVE'
+      })).data;
 
-  },
+      if (response.status !== 200) {
+        this.formError = response.message;
+        return
+      }
+      beginSession(response.jwt);
+
+    },
+
+  }
 };
 </script>
 
@@ -112,6 +133,20 @@ export default {
     <h2>{{ currentState === 'login' ? 'Login' : 'Sign up' }}</h2>
 
     <hr class="my-divider"/>
+
+    <!-- FIRST NAME -->
+    <div v-if="currentState === 'signup'" class="form-group form-floating form-group mb-3">
+      <input id="firstName" v-model="firstName" class="form-control" placeholder="Password" required type="text">
+      <label for="firstName">First name</label>
+      <div v-if="firstNameError" class="error-message">{{ firstNameError }}</div>
+    </div>
+
+    <!-- LAST NAME -->
+    <div v-if="currentState === 'signup'" class="form-group form-floating form-group">
+      <input id="lastName" v-model="lastName" class="form-control" placeholder="Password" required type="text">
+      <label for="lastName">Last name</label>
+      <div v-if="lastNameError" class="error-message">{{ lastNameError }}</div>
+    </div>
 
     <!-- EMAIL -->
     <form>
@@ -128,19 +163,6 @@ export default {
         <div v-if="passwordError" class="error-message">{{ passwordError }}</div>
       </div>
 
-      <!-- FIRST NAME -->
-      <div v-if="currentState === 'signup'" class="form-group form-floating form-group mb-3">
-        <input id="firstName" v-model="firstName" class="form-control" placeholder="Password" required type="password">
-        <label for="firstName">First name</label>
-        <div v-if="firstNameError" class="error-message">{{ firstNameError }}</div>
-      </div>
-
-      <!-- LAST NAME -->
-      <div v-if="currentState === 'signup'" class="form-group form-floating form-group">
-        <input id="lastName" v-model="lastName" class="form-control" placeholder="Password" required type="password">
-        <label for="lastName">Last name</label>
-        <div v-if="lastNameError" class="error-message">{{ lastNameError }}</div>
-      </div>
 
       <div v-if="currentState === 'signup'" class="form-group mb-3">
         <label for="role">Role:</label>
