@@ -1,6 +1,7 @@
 <script>
 
 import axios from "axios";
+import {myAxios} from "@/config/api";
 
 export default {
   name: "NewsPreview",
@@ -23,7 +24,7 @@ export default {
       if (this.commentsExpanded) {
         this.commentsExpanded = false
       } else {
-        this.comments = (await axios.get('http://localhost:8080/micaga/api/comments/onNews/' + this.news.id)).data
+        this.comments = (await myAxios.get('http://localhost:8080/micaga/api/comments/onNews/' + this.news.id)).data
         this.commentsExpanded = true
       }
     }
@@ -65,7 +66,7 @@ export default {
     </p>
 
 
-    <hr class="divider"/>
+    <hr class="my-divider"/>
 
     <transition enter-active-class="slide-enter-active" leave-active-class="slide-leave-active" name="slide">
       <div v-if="commentsExpanded" id="commentsSection">
@@ -86,12 +87,12 @@ export default {
 <style>
 
 .news-preview {
-  border-radius: 10px;
+  border-radius: 0.5rem;
   box-shadow: 4px 4px 15px #276749;
-  margin: 5vh 0 5vh 0;
-  padding: 5vh;
+  padding: 2rem;
   cursor: pointer;
   transition: transform 0.5s ease-in-out;
+  margin-bottom: 1.5rem;
 }
 
 h4, h6, p {
@@ -116,7 +117,7 @@ h4, h6, p {
 }
 
 .comment:hover {
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.05s ease-in-out;
   transform: scale(1.05);
 }
 
@@ -130,6 +131,11 @@ h4, h6, p {
   transform: translateY(-20px);
 }
 
+.slide-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .slide-enter-active {
   opacity: 1;
   transform: translateY(0);
@@ -139,6 +145,24 @@ h4, h6, p {
   opacity: 0;
   transform: translateY(-30px);
 }
+
+.category-holder {
+  text-shadow: #2c3e50;
+  display: inline-block;
+  background-color: #2f855a;
+  border-radius: 6px;
+  color: white;
+  padding: 0.25rem;
+  margin-left: 0.8rem;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.category-holder:hover {
+  border: 3px solid #6affc2; /* Default border color */
+  transition: transform 0.2s ease-in-out;
+  transform: scale(1.15);
+}
+
 
 .flex-row {
   display: flex;
@@ -167,18 +191,9 @@ div {
   padding-left: 10px;
 }
 
-.category-holder {
-  background-color: #2f855a;
-  font-family: "Harlow Solid Italic", serif;
-  border-radius: 6px;
-  color: white;
-  padding: 3px;
-}
-
 
 #creationTime {
   font-size: 0.8rem;
-
 }
 
 #author {

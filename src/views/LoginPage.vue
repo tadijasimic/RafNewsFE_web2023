@@ -1,5 +1,9 @@
 <script>
+import {myAxios} from "@/config/api";
+
 export default {
+  name: 'LoginPage',
+  //displayName:'LoginPage',
   data() {
     return {
       currentState: 'login',
@@ -64,7 +68,7 @@ export default {
         if (this.currentState === 'login') {
           // Login logic
 
-        } else {
+        } else if (this.currentState === 'signup') {
           // Sign up logic
           console.log('Signing up...');
         }
@@ -83,7 +87,6 @@ export default {
       this.roleError = '';
     },
     hasErrors() {
-
       return (
           this.emailError ||
           this.passwordError ||
@@ -92,6 +95,13 @@ export default {
           this.roleError)
 
     },
+    login:
+        () => {
+          myAxios.post('')
+        }
+    ,
+
+
   },
 };
 </script>
@@ -100,7 +110,8 @@ export default {
 <template>
   <div class="login-page">
     <h2>{{ currentState === 'login' ? 'Login' : 'Sign up' }}</h2>
-    <hr class="divider"/>
+
+    <hr class="my-divider"/>
 
     <!-- EMAIL -->
     <form>

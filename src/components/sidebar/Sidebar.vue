@@ -1,13 +1,16 @@
 <script>
 import SidebarLink from './SidebarLink.vue'
 import {collapsed, sidebarWidth, toggleSidebar} from './sidebar_state'
+import {currSession} from "@/config/session";
 
 export default {
+  methods: {currSession},
   props: {},
   components: {SidebarLink},
   setup() {
     return {collapsed, toggleSidebar, sidebarWidth}
-  }
+  },
+
 }
 </script>
 
@@ -18,12 +21,13 @@ export default {
         <span v-if="!collapsed">Raf_News</span>
         <span v-else>RN</span>
       </h4>
-      <SidebarLink icon="fa fa-home" to="/home">Home</SidebarLink>
+      <SidebarLink icon="fas fa-home" to="/home">Home</SidebarLink>
       <SidebarLink icon="fas fa-users" to="/users">Users</SidebarLink>
-      <SidebarLink icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
-      <SidebarLink icon=" fas fa-right-from-bracket" to="/login">Login</SidebarLink>
-      <SidebarLink icon="fas fa-users" to="/">Friends</SidebarLink>
-      <SidebarLink icon="fas fa-image" to="/">Images</SidebarLink>
+      <SidebarLink v-if="!currSession()" icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
+      <SidebarLink v-if="!currSession()" icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
+
+      <SidebarLink v-if="!currSession()" icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
+      <SidebarLink icon=" fas fa-right-from-bracket" to="/logout">Log out</SidebarLink>
     </div>
 
     <!-- Split dropend button -->
@@ -41,7 +45,7 @@ export default {
 
 <style>
 :root {
-  --sidebar-bg-color: #2f855a;
+  --sidebar-bg-color: #49ffa2;
   --sidebar-item-hover: #38a169;
   --sidebar-item-active: #276749;
 }
@@ -52,7 +56,7 @@ export default {
 
 .sidebar {
   color: white;
-  background-color: var(--sidebar-bg-color);
+  background-color: #2f855a;
   height: 100vh;
   float: left;
   position: fixed;
@@ -64,6 +68,7 @@ export default {
   transition: 0.5s ease;
   display: flex;
   flex-direction: column;
+  width: v-bind(sidebarWidth);
 }
 
 .btn-group {

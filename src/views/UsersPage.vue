@@ -1,18 +1,18 @@
 <script>
 
-import FilterComponent from "@/components/filter_component/FilterComponent.vue";
+import Filter from "@/components/filter/Filter.vue";
 
 export default {
   name: 'UsersPage',
-  components: {FilterComponent},
+  components: {Filter},
 
 }
 </script>
 
 
 <template>
-  <h1>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa</h1>
-  <FilterComponent></FilterComponent>
+  <h2>USERI</h2>
+  <Filter></Filter>
 </template>
 
 <style scoped>

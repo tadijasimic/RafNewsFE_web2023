@@ -6,5 +6,5 @@ export const toggleSidebar = () => (collapsed.value = !collapsed.value)
 export const SIDEBAR_WIDTH = 8.58
 export const SIDEBAR_WIDTH_COLLAPSED = 3.585
 export const sidebarWidth = computed(
-    () => `${collapsed.value ? SIDEBAR_WIDTH_COLLAPSED + 'rem' : SIDEBAR_WIDTH + 'rem'}`
+    () => `${collapsed.value ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH}rem`
 )

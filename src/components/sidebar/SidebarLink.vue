@@ -32,6 +32,11 @@ export default {
 <style scoped>
 @import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
 
+.item {
+  flex: 1;
+  padding-left: 2vw;
+}
+
 .fade-enter-active {
   animation: fadeIn 1s forwards;
 }
@@ -51,10 +56,6 @@ export default {
 
 }
 
-.item {
-  flex: 1;
-  padding-left: 2vw;
-}
 
 @keyframes fadeIn {
   0% {
@@ -96,7 +97,7 @@ export default {
   user-select: none;
 
   padding: 0.4em;
-  border-radius: 0.25em;
+  border-radius: 0.5em;
 
   color: white;
   text-decoration: none;
@@ -104,6 +105,8 @@ export default {
 
 .link:hover {
   background-color: var(--sidebar-item-hover);
+  transition: transform 0.2s ease-in-out;
+  transform: scale(1.15);
 }
 
 .link.active {
@@ -112,7 +115,7 @@ export default {
 
 .link .icon {
   font-size: 1.3rem;
-  align-items: center;
-  margin-left: 0;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
 }
 </style>
