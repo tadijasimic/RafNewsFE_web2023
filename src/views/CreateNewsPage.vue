@@ -1,71 +1,132 @@
+<script>
+import {currSession, roles} from "@/config/session";
+import {myRouter} from "@/config/router";
+import {myAxios} from "@/config/api";
+
+export default {
+  name: "CreateNewsPage",
+  computed: {
+    roles() {
+      return roles;
+    },
+  },
+  data() {
+    return {
+      categories: [],
+      newsCategory: null,
+      title: "",
+      content: "",
+    };
+  },
+  methods: {
+    currSession,
+    async fetchCategories() {
+      try {
+        const response = await myAxios.get("/categories/all");
+        this.categories = response.data;
+      } catch (error) {
+        console.log(error.message);
+      }
+    },
+    async publishNews() {
+      try {
+        const newNews = {
+          id: 1,
+          title: this.title,
+          content: this.content,
+          visited: 0,
+          creationTime: new Date().toISOString(),
+          authorId: this.currSession().id,
+          categoryId: this.newsCategory.id,
+        };
+        console.log(newNews)
+
+        await myAxios.post("/news", newNews);
+        await myRouter.push('/')
+        alert('Your news have just been published!')
+      } catch (error) {
+        console.log(error.message);
+      }
+    },
+    cancel() {
+      myRouter().push("/");
+    },
+  },
+  async mounted() {
+    await this.fetchCategories();
+  },
+};
+</script>
+
 <template>
-  <div class="news-form">
-    <div class="form-group">
-      <label for="author">Author:</label>
-      <div>{{ author }}</div>
-    </div>
+  <label v-if="currSession()" class="sessionInfo">
+    <i
+        :class="{
+        'fas fa-user-tie': currSession().role === roles.contentCreator,
+        'fa fa-user-shield': currSession().role === roles.admin
+      }"
+        class="icon"
+    ></i>
+    {{ ' ' + currSession().firstName + ' ' + currSession().lastName }}
+  </label>
 
-    <div class="form-group">
-      <label for="title">Title:</label>
-      <input id="title" v-model="title" placeholder="Enter title" type="text">
+  <div class="publish-form">
+    <div class="mb-3">
+      <label class="form-label" for="exampleFormControlInput1">Title:</label>
+      <input
+          id="newsTitle"
+          v-model="title"
+          class="form-control"
+          placeholder="News title"
+          type="text"
+      />
     </div>
-
-    <div class="form-group">
-      <label for="content">News Content:</label>
-      <textarea id="content" v-model="content" placeholder="Enter news content"></textarea>
+    <div class="mb-3">
+      <label class="form-label" for="exampleFormControlTextarea1">Body:</label>
+      <textarea
+          id="newsContent"
+          v-model="content"
+          class="form-control"
+          placeholder="News body"
+          rows="6"
+      ></textarea>
+    </div>
+    <div class="filterComponent">
+      <button
+          aria-expanded="false"
+          class="btn btn-secondary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          type="button"
+      >
+        {{ newsCategory ? newsCategory.name : 'Categories' }}
+      </button>
+      <ul id="dropMenu" class="dropdown-menu dropdown-menu-lg-start">
+        <li>
+          <a
+              v-for="category in categories"
+              class="dropdown-item active"
+              href="#"
+              @click="()=> (newsCategory = category)"
+          >{{ category.name }}</a
+          >
+        </li>
+        <li><a class="dropdown-item"></a></li>
+      </ul>
     </div>
 
     <div class="form-actions">
-      <button class="btn-publish" @click="showConfirmModal">Publish</button>
+      <button class="btn-publish" @click="publishNews">Publish</button>
       <button class="btn-cancel" @click="cancel">Cancel</button>
-    </div>
-
-    <!-- Confirm Modal -->
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <p>Save draft?</p>
-        <div class="modal-actions">
-          <button @click="saveDraft">Yes</button>
-          <button @click="closeModal">No</button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'CreateNewsPage',
-  data() {
-    return {
-      author: 'John Doe',
-      title: '',
-      content: '',
-      showModal: false
-    };
-  },
-  methods: {
-    showConfirmModal() {
-      this.showModal = true;
-    },
-    saveDraft() {
-      // Save draft logic goes here
-      this.closeModal();
-    },
-    closeModal() {
-      this.showModal = false;
-    },
-    cancel() {
-      this.showConfirmModal();
-    }
-  }
-};
-</script>
 
 <style scoped>
-.news-form {
-  max-width: 400px;
-  margin: 0 auto;
+.publish-form {
+  max-width: 40rem;
+  margin: auto;
+  margin-top: 3rem;
 }
 
 .form-group {
@@ -128,4 +189,5 @@ textarea {
 .modal-actions {
   margin-top: 2rem;
 }
+
 </style>

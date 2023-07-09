@@ -2,10 +2,15 @@
 
 import axios from 'axios';
 
+
 // Create a new Axios instance
 const myAxios = axios.create(
     {baseURL: 'http://localhost:8080/api'}
 );
+
+function getMyAxios() {
+    return myAxios
+}
 
 // Function to remove the Authorization header
 const removeAuthorizationHeader = () => {
@@ -23,4 +28,4 @@ const setAuthorizationHeader = () => {
 };
 
 // Export the Axios instance and functions
-export {myAxios, removeAuthorizationHeader, setAuthorizationHeader};
+export {myAxios, removeAuthorizationHeader, setAuthorizationHeader, getMyAxios};

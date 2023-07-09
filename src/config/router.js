@@ -50,7 +50,7 @@ const routes = [
         component: LogoutPage,
         meta: {
             authenticationRequired: true,
-            authorizationRequired: roles.contentCreator
+            authorizationRequired: null
         }
     },
     {
@@ -95,6 +95,9 @@ myRouter.beforeEach((to, from, next) => {
             }
             return; // Exit the function early after redirection
         }
+    } else if (to.path === '/login' && currSession()) {
+        redirect(from.path, 'You are already logged in. Please refresh your browser window .', next);
+        return;
     }
 
     next();
@@ -102,7 +105,10 @@ myRouter.beforeEach((to, from, next) => {
 
 function redirect(redirectRoute, redirectMessage, next) {
     console.log("ROUTER SE JAVLJA");
-    next(redirectRoute);
     alert(redirectMessage);
+
+    setTimeout(() => {
+        next(redirectRoute);
+    }, 2000);
 }
 

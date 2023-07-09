@@ -1,14 +1,31 @@
 <script>
 import SidebarLink from './SidebarLink.vue'
-import {collapsed, sidebarWidth, toggleSidebar} from './sidebar_state'
-import {currSession} from "@/config/session";
+import {collapsed, sidebarWidth, toggleSidebar} from './sidebar'
+import {beginSession, currSession, endSession, roles} from "@/config/session";
+import {watch} from "vue";
 
 export default {
+  computed: {
+    roles() {
+      return roles
+    },
+    endSession() {
+      return endSession
+    },
+    beginSession() {
+      return beginSession()
+    }
+
+  },
   methods: {currSession},
   props: {},
   components: {SidebarLink},
   setup() {
-    return {collapsed, toggleSidebar, sidebarWidth}
+    watch(currSession, (newSession) => {
+      // Handle the change in currSession value here
+      console.log("currSession changed:", newSession)
+    })
+    return {collapsed, toggleSidebar, sidebarWidth, currSession, beginSession, endSession}
   },
 
 }
@@ -22,11 +39,22 @@ export default {
         <span v-else>RN</span>
       </h4>
       <SidebarLink icon="fas fa-home" to="/">Home</SidebarLink>
-      <SidebarLink icon="fas fa-users" to="/users">Users</SidebarLink>
-      <SidebarLink icon="fas fa-newspaper" to="/createNews">Publish</SidebarLink>
-      <SidebarLink icon="fas fa-rectangle-list" to="/categories">Categories</SidebarLink>
+
+      <SidebarLink
+          v-if=" currSession() && currSession().role === 'ADMIN'"
+          icon="fas fa-users" to="/users">Users
+      </SidebarLink>
+
+      <SidebarLink
+          :class="{'disabledOption':  !currSession() || currSession().role === roles.contentViewer}"
+          icon="fas fa-newspaper"
+          to="/createNews">
+        Publish
+      </SidebarLink>
+
+      <SidebarLink icon="fas fa-rectangle-list" to="/categories">Topics</SidebarLink>
       <SidebarLink v-if="!currSession()" icon=" fas fa-right-to-bracket" to="/login">Login</SidebarLink>
-      <SidebarLink v-if="currSession()" icon=" fas fa-right-from-bracket" to="/logout">Log out</SidebarLink>
+      <SidebarLink v-if="currSession()" icon=" fas fa-right-from-bracket" to="/logout">Logout</SidebarLink>
     </div>
 
     <!-- Split dropend button -->
@@ -68,6 +96,10 @@ export default {
   display: flex;
   flex-direction: column;
   width: v-bind(sidebarWidth);
+}
+
+.disabledOption {
+  color: darkgray;
 }
 
 .btn-group {

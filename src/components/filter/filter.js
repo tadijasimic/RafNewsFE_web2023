@@ -1,10 +1,17 @@
 import {ref} from "vue";
 
-export const filterExpanded = ref(false)
-export const selectedCategory = ref(null)
-export const dateOrder = ref('asc')
+const filterExpanded = ref(false)
+const selectedCategory = ref(null)
+const dateOrder = ref('asc')
 
-export const trending = ref(false)
-export const pageSize = ref(10)
+const trending = ref(false)
 
-export const tagSearch = ref('')
+function isTrending() {
+    return trending.value
+}
+
+const pageSize = ref(10)
+
+const tagSearch = ref('')
+
+export {filterExpanded, selectedCategory, dateOrder, trending, isTrending, pageSize, tagSearch}

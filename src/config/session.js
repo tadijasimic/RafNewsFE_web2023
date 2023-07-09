@@ -4,6 +4,9 @@ import {removeAuthorizationHeader, setAuthorizationHeader} from "@/config/api";
 const roles = {admin: 'ADMIN', contentCreator: 'CONTENT_CREATOR', contentViewer: 'CONTENT_VIEWER'}
 const status = {active: 'ACTIVE', deactivated: 'DEACTIVATED'}
 
+const getRoles = () => {
+    return (roles)
+}
 
 /** Set the JWT and update the authorization header */
 const beginSession = (token) => {
@@ -49,15 +52,16 @@ function currSession() {
 
     if (payload === null)
         return null
-    /* if (isJwtExpired(payload))
-         endSession()*/
+
+    if (isJwtExpired(payload))
+        endSession()
 
     return payload
 
 }
 
 
-export {roles, status, currSession, beginSession, endSession};
+export {roles, status, currSession, beginSession, endSession, getRoles};
 
 
 

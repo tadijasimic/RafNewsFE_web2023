@@ -1,6 +1,6 @@
 <script>
 import Sidebar from "@/components/sidebar/Sidebar.vue";
-import {sidebarWidth} from "@/components/sidebar/sidebar_state";
+import {sidebarWidth} from "@/components/sidebar/sidebar";
 import {endSession, beginSession, currSession, roles} from "@/config/session";
 import {watch} from "vue";
 
@@ -8,6 +8,9 @@ import {watch} from "vue";
 export default {
   name: 'App',
   methods: {currSession, watch},
+  data() {
+    return {}
+  },
   computed: {
     roles() {
       return roles
@@ -21,8 +24,9 @@ export default {
   },
   components: {Sidebar},
   setup() {
-    return {sidebarWidth, beginSession, endSession};
-  }
+    return {sidebarWidth, currSession, endSession, beginSession};
+  },
+
 };
 </script>
 <!-- app view port -->
@@ -33,14 +37,7 @@ export default {
   <!-- route pages view port -->
   <div :style="{'margin-left': sidebarWidth}" class="routerView">
     <router-view/>
-
   </div>
-  <label v-if="currSession()" class="sessionInfo">
-    <i :class="{ 'fas fa-user-tie': currSession().role === roles.contentCreator,'fa fa-user-shield': currSession().role === roles.admin }"
-       class="icon"/>
-    {{ ' ' + currSession().firstName + ' ' + currSession().lastName }}
-  </label>
-
 
 </template>
 
@@ -49,6 +46,16 @@ export default {
 
 @import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
 
+
+.sessionInfo {
+  color: #2f855a;
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+  font-size: 1.1rem;
+  right: 1rem;
+
+}
 
 html {
   font-size: 35px; /* Set a base font size */
@@ -75,22 +82,6 @@ html {
   width: 100%;
 }
 
-.stage {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.sessionInfo {
-  color: #2f855a;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 9999;
-  font-size: 1.1rem;
-}
 
 #currentUserIcon {
 

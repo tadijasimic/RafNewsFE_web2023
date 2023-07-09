@@ -1,7 +1,9 @@
 <script>
 import {myAxios} from "@/config/api";
-import {beginSession} from "@/config/session";
+import {beginSession, endSession} from "@/config/session";
 import {myRouter} from "@/config/router";
+import {watch} from "vue";
+import {dateOrder, filterExpanded, pageSize, selectedCategory, trending} from "@/components/filter/filter";
 
 export default {
   name: 'LoginPage',
@@ -95,7 +97,8 @@ export default {
 
     },
     async login() {
-      let response = (await myAxios.post('/users/login', {email: this.email, password: this.password})).data;
+      let response = (await myAxios.post('/users/login',
+          {email: this.email, password: this.password})).data;
       if (response.status !== 200) {
         this.formError = response.message;
         return
@@ -105,24 +108,31 @@ export default {
 
     },
     async signup() {
+
+      console.log(this.email + ' ' + this.firstName + ' ' + this.lastName + ' ' + this.password + ' ' + this.role.toUpperCase())
       let response = (await myAxios.post('/users/signup', {
         id: 1,
         email: this.email,
         firstName: this.firstName,
         lastName: this.lastName,
         password: this.password,
-        role: this.role,
+        role: (this.role === 'admin') ? this.role.toUpperCase() : 'CONTENT_' + this.role.toUpperCase(),
         status: 'ACTIVE'
       })).data;
-
       if (response.status !== 200) {
         this.formError = response.message;
         return
       }
       beginSession(response.jwt);
-
+      myRouter.push('/')
     },
+    setup() {
+      watch([endSession, beginSession], () => {
+        if (filterExpanded.value) {
+        }
 
+      })
+    }
   }
 };
 </script>
@@ -130,7 +140,7 @@ export default {
 
 <template>
   <div class="login-page">
-    <h2>{{ currentState === 'login' ? 'Login' : 'Sign up' }}</h2>
+    <h2>{{ currentState === 'login' ? 'login' : 'signup' }}</h2>
 
     <hr class="my-divider"/>
 
@@ -169,6 +179,7 @@ export default {
         <select id="role" v-model="role">
           <option value="creator">Creator</option>
           <option value="viewer">Viewer</option>
+          <option value="admin">Admin</option>
         </select>
         <div v-if="roleError" class="error-message">{{ roleError }}</div>
       </div>

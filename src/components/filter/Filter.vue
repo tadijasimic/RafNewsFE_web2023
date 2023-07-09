@@ -32,9 +32,8 @@ export default {
   },
   methods: {
     toggleExpanded() {
-      if (filterExpanded.value === null)
-        filterExpanded.value = true
-      else filterExpanded.value = !filterExpanded.value
+
+      filterExpanded.value = !filterExpanded.value
       console.log(filterExpanded.value)
     },
 
@@ -56,7 +55,7 @@ export default {
       dateOrder.value = dateOrder.value === 'asc' ? 'desc' : 'asc';
       console.log(dateOrder)
     },
-    togleTrending() {
+    toggleTrending() {
       trending.value = !trending.value
     },
     async loadCategories() {
@@ -79,6 +78,7 @@ export default {
 
 
 <template>
+
   <div :class="{'filterOff' : filterExpanded.value === false}" class="filter">
 
     <!-- FILTER BUTTON -->
@@ -95,51 +95,63 @@ export default {
         <!-- Search input -->
         <input v-model="tagSearch.value" placeholder="Search for Tags" type="text"/>
 
+        <hr class="hr"/>
 
         <!-- Trending button -->
-        <button class="trending-button" @click="togleTrending">
+        <button :class="{'trendingOn': trending.value}" class="filterComponent" @click="toggleTrending">
           <i class="fas fa-fire"></i>
           Trending
         </button>
 
+        <hr class="hr"/>
 
         <!-- Dropdown menu -->
-        <div class="dropdown">
-          <button aria-expanded="false" class="btn btn-secondary dropdown-toggle filterComponent" data-bs-toggle="dropdown" type="button">
-            {{ selectedCategory.value ? selectedCategory.value.name : 'Categories' }}
-          </button>
-          <ul id="dropMenu" class="dropdown-menu dropdown-menu-dark">
-            <li>
-              <a v-for="category in categories" class="dropdown-item active filterComponent" href="#"
-                 @click="selectCategory(category)">{{ category.name }}</a>
-            </li>
+        <div class="filterComponent">
 
-            <li><a class="dropdown-item" href="#">Separated link</a></li>
-          </ul>
+          <select aria-label="size 3 select example" class="form-select" size="2">
+            <option selected>{{ selectedCategory.value ? selectedCategory.value.name : 'Categories' }}</option>
+            <option v-for="category in categories" @click="selectCategory(category)">{{ category.name }}</option>
+          </select>
         </div>
 
+        <!--<div class="filterComponent">
+          <button aria-expanded="false" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button">
+            {{ selectedCategory.value ? selectedCategory.value.name : 'Categories' }}
+          </button>
+          <ul id="dropMenu" class="dropdown-menu dropdown-menu-lg-start">
+            <li>
+              <a v-for="category in categories" class="dropdown-item active" href="#"
+                 @click="selectCategory(category)"
+              >{{ category.name }}</a>
+            </li>
+            <li><a class="dropdown-item" @click="()=>selectCategory.value = null"></a></li>
+          </ul>
+        </div>-->
+
+        <hr class="hr"/>
 
         <!-- Page size control -->
         <div class="page-size">
-          <label id="pageSizeLabel">Page Size</label>
-          <button class="filterComponent" @click="decreasePageSize">
+          <span class="filterSetting">Page_Size</span>
+          <button class="filterComponent" @click="increasePageSize">
             <i class="fas fa-arrow-up"></i>
           </button>
-          <span>{{ pageSize }}</span>
-          <button class="filterComponent" @click="increasePageSize">
+          <span class="filterSetting">{{ pageSize }}</span>
+          <button class="filterComponent" @click="decreasePageSize">
             <i class="fas fa-arrow-down"></i>
           </button>
         </div>
 
+        <hr class="hr"/>
+
         <!-- Date filter -->
-        <div class="filterComponent">
+        <div class="filterComponent" @click="toggleSortDirection">
           <div>
             <span>Newest</span>
           </div>
-          <div class="filter-option" @click="toggleSortDirection">
-            <div :class="{ 'rotated': dateOrder.value === 'desc' }" class="date-sort-icon">
-              <i class="fas fa-arrow-up-short-wide"></i>
-            </div>
+
+          <div :class="{ 'rotated': dateOrder.value === 'desc' }" class="date-sort-icon">
+            <i class="fas fa-arrow-up-short-wide"></i>
           </div>
           <div class="filter-option">
             <span>Oldest</span>
@@ -159,55 +171,55 @@ export default {
 
 .filter {
   position: fixed;
-  right: 1rem;
-  top: 3rem;
-  width: 10rem; /* Adjust as needed */
-  height: 23rem;
+  right: 0.5rem;
+  top: 2rem;
+  width: 10rem;
+  height: 25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  margin-top: 2rem;
+  padding: 0.5rem;
   border-radius: 1rem;
-  box-shadow: 0.1rem 0.1rem 0.5rem #276749;
+  box-shadow: 0 0 0.7rem #276749;
   font-size: 0.8rem;
+  background-color: #cde9d8;
 }
 
 .filterOff {
   background-color: transparent;
   color: white;
   box-shadow: none;
-  z-index: 0;
+  width: 7rem;
 }
 
 
 .filter-button {
   font-size: 1.5rem;
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 2.5rem;
+  height: 2.5rem;
   border: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
   transition: 1s;
+  border-radius: 50%;
 }
 
-.filter-button:hover {
-  color: #00ff82;
-  transform: scale(1.2);
-}
 
 .filter-button.move-down {
   bottom: 5rem;
   animation-name: moveButtonDown;
   animation-duration: 0.8s;
   animation-fill-mode: forwards;
-  color: #00ff82;
+  color: #2f855a;
+  background-color: transparent;
+  width: 2.5rem;
+  height: 2.5rem;
 
 }
+
 
 .filter-button.move-up {
   font-size: 1.5rem;
@@ -216,9 +228,8 @@ export default {
   animation-name: moveButtonUp;
   animation-duration: 1s;
   animation-fill-mode: forwards;
-  color: #2f855a;
-  border-radius: 50%;
-  box-shadow: 1px 1px 1px 1px #2f855a;;
+  color: white;
+  background-color: #2f855a;
 
 }
 
@@ -232,16 +243,20 @@ export default {
     transform: translateY(-10rem);
     transition: ease-in;
   }
+
 }
 
 @keyframes moveButtonDown {
 
   0% {
-    transform: translateY(0);
+    transform: translateY(15rem);
   }
   100% {
-    transform: translateY(26rem);
+    transform: translateY(30rem);
+    transition: ease-in;
+
   }
+
 }
 
 
@@ -281,12 +296,22 @@ export default {
   }
 }
 
+.filterSetting {
+  font-size: 0.8rem;
+  height: 50px;
+  border: 0;
+  margin: auto;
+  width: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 
 .page-size button {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
-
 }
 
 
@@ -306,9 +331,8 @@ export default {
 
 
 .filterComponent {
-  text-shadow: #2c3e50;
   background-color: white;
-  color: green;
+  color: #276749;
   transition: border-color 0.6s linear;
   display: flex;
   width: 70%;
@@ -316,20 +340,31 @@ export default {
   align-items: center;
   margin: auto;
   justify-content: center;
+  cursor: pointer;
   border-radius: 1rem;
+  border: none;
 }
 
-span {
-  margin: auto;
-}
-
-.filter {
-  margin: auto;
-}
 
 .filterComponent:hover {
-  border: 3px solid #6affc2; /* Default border color */
-  transition: transform 0.4s linear;
-  transform: scale(1.05);
+  border: 3px solid #6affc2;
+  transition: transform 0.2s linear;
+  transform: scale(1.07);
+
 }
+
+.trendingOn {
+  background-color: #276749;
+  color: white;
+}
+
+#dropMenu {
+  position: relative;
+}
+
+.hr {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 </style>

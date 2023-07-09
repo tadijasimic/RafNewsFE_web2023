@@ -1,14 +1,14 @@
 <script>
 import {computed} from 'vue'
 import {useRoute} from 'vue-router'
-import {collapsed} from './sidebar_state.js'
+import {collapsed} from './sidebar.js'
 
 export default {
   name: 'SidebarLink',
   props: {
     to: {type: String, required: true},
     icon: {type: String, required: true}
-  },//???????????????????????????????????????????????Todo:pitaj...
+  },
   setup(props) {
     const route = useRoute()
     const isActive = computed(() => route.path === props.to)
